@@ -11,24 +11,26 @@ interface TransactionItemProps {
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onPress }) => {
   const getTransactionIcon = () => {
-    switch (transaction.type) {
-      case 'ADD_MONEY': return 'arrow-down-circle';
-      case 'WITHDRAW': return 'arrow-up-circle';
-      case 'SEND_MONEY': return 'send';
-      case 'CASH_IN': return 'plus-circle';
-      case 'CASH_OUT': return 'minus-circle';
+    const type = transaction.type.toUpperCase();
+    switch (type) {
+      case 'ADDMONEY': return 'arrow-down-circle';
+      case 'WITHDRAWMONEY': return 'arrow-up-circle';
+      case 'SENDMONEY': return 'send';
+      case 'CASHIN': return 'plus-circle';
+      case 'CASHOUT': return 'minus-circle';
       default: return 'activity';
     }
   };
 
   const getTransactionColor = () => {
-    switch (transaction.type) {
-      case 'ADD_MONEY':
-      case 'CASH_IN':
+    const type = transaction.type.toUpperCase();
+    switch (type) {
+      case 'ADDMONEY':
+      case 'CASHIN':
         return COLORS.success;
-      case 'WITHDRAW':
-      case 'SEND_MONEY':
-      case 'CASH_OUT':
+      case 'WITHDRAWMONEY':
+      case 'SENDMONEY':
+      case 'CASHOUT':
         return COLORS.error;
       default:
         return COLORS.gray500;
@@ -36,17 +38,29 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, o
   };
 
   const getTransactionSign = () => {
-    switch (transaction.type) {
-      case 'ADD_MONEY':
-      case 'CASH_IN':
+    const type = transaction.type.toUpperCase();
+    switch (type) {
+      case 'ADDMONEY':
+      case 'CASHIN':
         return '+';
-      case 'WITHDRAW':
-      case 'SEND_MONEY':
-      case 'CASH_OUT':
+      case 'WITHDRAWMONEY':
+      case 'SENDMONEY':
+      case 'CASHOUT':
         return '-';
       default:
         return '';
     }
+  };
+
+  const formatTransactionType = (type: string) => {
+    const typeMap: { [key: string]: string } = {
+      'ADDMONEY': 'Add Money',
+      'WITHDRAWMONEY': 'Withdraw',
+      'SENDMONEY': 'Send Money',
+      'CASHIN': 'Cash In',
+      'CASHOUT': 'Cash Out',
+    };
+    return typeMap[type.toUpperCase()] || type;
   };
 
   const formatDate = (dateString: string) => {
@@ -71,7 +85,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, o
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.type}>{transaction.type.replace('_', ' ')}</Text>
+        <Text style={styles.type}>{formatTransactionType(transaction.type)}</Text>
         <Text style={styles.date}>
           {formatDate(transaction.createdAt)} • {formatTime(transaction.createdAt)}
         </Text>

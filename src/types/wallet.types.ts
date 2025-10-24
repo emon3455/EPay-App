@@ -9,7 +9,7 @@ export interface Wallet {
 
 export interface Transaction {
   _id: string;
-  type: 'ADD_MONEY' | 'WITHDRAW' | 'SEND_MONEY' | 'CASH_IN' | 'CASH_OUT';
+  type: 'ADDMONEY' | 'WITHDRAWMONEY' | 'SENDMONEY' | 'CASHIN' | 'CASHOUT';
   amount: number;
   sender?: {
     _id: string;
@@ -21,8 +21,16 @@ export interface Transaction {
     name: string;
     email: string;
   };
+  agent?: {
+    _id: string;
+    name: string;
+    email: string;
+  };
   status: 'PENDING' | 'COMPLETED' | 'FAILED';
   commission?: number;
+  fee?: number;
+  note?: string;
+  reference?: string;
   createdAt: string;
   updatedAt: string;
 }

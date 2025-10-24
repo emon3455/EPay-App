@@ -23,7 +23,6 @@ type Props = NativeStackScreenProps<MainStackParamList, 'Transactions'>;
 
 const FILTER_OPTIONS = [
   { label: 'All', value: '' },
-  { label: 'Add Money', value: 'ADDMONEY' },
   { label: 'Withdraw', value: 'WITHDRAWMONEY' },
   { label: 'Send Money', value: 'SENDMONEY' },
   { label: 'Cash-In', value: 'CASHIN' },

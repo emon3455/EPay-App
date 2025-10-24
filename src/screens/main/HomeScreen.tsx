@@ -7,7 +7,6 @@ import {
   RefreshControl, 
   TouchableOpacity,
   Dimensions,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -17,7 +16,6 @@ import { COLORS } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchWallet, fetchTransactions } from '../../store/slices/walletSlice';
 import { MainStackParamList } from '../../navigation/types';
-import LinearGradient from 'react-native-linear-gradient';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
