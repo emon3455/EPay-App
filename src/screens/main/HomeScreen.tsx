@@ -137,7 +137,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
               <TouchableOpacity 
                 style={styles.serviceItem}
-                onPress={() => {/* TODO: Show commission */}}
+                onPress={() => navigation.navigate('AgentCommission')}
               >
                 <View style={[styles.serviceIcon, { backgroundColor: '#8b5cf6' }]}>
                   <Icon name="award" size={22} color={COLORS.white} />

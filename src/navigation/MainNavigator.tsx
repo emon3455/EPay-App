@@ -11,6 +11,7 @@ import {
   ChangePasswordScreen,
   CashInScreen,
   CashOutScreen,
+  AgentCommissionScreen,
 } from '../screens';
 import { MainStackParamList } from './types';
 
@@ -34,6 +35,7 @@ export const MainNavigator: React.FC = () => {
       {/* Agent Screens */}
       <Stack.Screen name="CashIn" component={CashInScreen} />
       <Stack.Screen name="CashOut" component={CashOutScreen} />
+      <Stack.Screen name="AgentCommission" component={AgentCommissionScreen} />
     </Stack.Navigator>
   );
 };

@@ -16,6 +16,7 @@ export type MainStackParamList = {
   // Agent screens
   CashIn: undefined;
   CashOut: undefined;
+  AgentCommission: undefined;
 };
 
 export type RootStackParamList = {
