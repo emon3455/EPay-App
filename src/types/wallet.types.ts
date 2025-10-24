@@ -53,12 +53,12 @@ export interface SendMoneyData {
 }
 
 export interface CashInData {
-  userEmail: string;
+  userId: string;
   amount: number;
 }
 
 export interface CashOutData {
-  userEmail: string;
+  userId: string;
   amount: number;
 }
 

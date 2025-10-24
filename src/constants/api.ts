@@ -27,7 +27,7 @@ export const API_ENDPOINTS = {
   WITHDRAW_MONEY: '/wallet/withdraw-money',
   SEND_MONEY: '/wallet/send-money',
   CASH_IN: '/wallet/cash-in',
-  CASH_OUT: '/wallet/cash-out',
+  CASH_OUT: '/wallet/agent/withdraw-user-money', // Fixed: Use the correct endpoint
   GET_ALL_WALLETS: '/wallet/admin/all',
   BLOCK_WALLET: '/wallet/admin/block',
   
@@ -35,4 +35,7 @@ export const API_ENDPOINTS = {
   GET_MY_TRANSACTIONS: '/transaction/me',
   GET_ALL_TRANSACTIONS: '/transaction/admin/all',
   GET_AGENT_COMMISSION: '/transaction/agent/commission',
+  
+  // System Config
+  GET_RATES: '/system-config',
 };
