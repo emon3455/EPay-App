@@ -1,0 +1,1221 @@
+{
+	"info": {
+		"_postman_id": "94989ed9-3fbd-42a0-bdd5-98f241221a67",
+		"name": "ePay - Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29108407"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"email\" : \"user@yopmail.com\",\r\n    // \"password\" :\"123@Emon\"\r\n    \"email\" : \"superadmin@yopmail.com\",\r\n    \"password\" :\"12345678\"\r\n    // \"email\" : \"agent@yopmail.com\",\r\n    // \"password\" :\"123@Emon\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzQiLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3NTU4NTQ4NzksImV4cCI6MTc1NTk0MTI3OX0.s1I93ZwQfamvFsmXNOq4JDd_MvfIHE7pkZY1N-NJZZs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"Phero@12345678\",\r\n    \"newPassword\" : \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/change-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzQiLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3NTU4NTQ4NzksImV4cCI6MTc1NTk0MTI3OX0.s1I93ZwQfamvFsmXNOq4JDd_MvfIHE7pkZY1N-NJZZs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"superadmin@yopmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzQiLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3NTU4NTQ4NzksImV4cCI6MTc1NTk0MTI3OX0.s1I93ZwQfamvFsmXNOq4JDd_MvfIHE7pkZY1N-NJZZs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : \"688e1085d6e3dba8dd2427c4\",\r\n    \"newPassword\" : \"Phero@12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzQiLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3NTU4NTYwODUsImV4cCI6MTc1NTk0MjQ4NX0.mKi1ucCrmE1_RCeyr2mzm0uHxPF8drLvw8TZ51bMEJo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\" : \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/set-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"set-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users(User/Agent/Admin)",
+			"item": [
+				{
+					"name": "registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test User\",\r\n    \"email\": \"user40@yopmail.com\",\r\n    \"password\":\"123@Emon\",\r\n    \"role\":\"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/user/register",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU0MTQ1MDI4LCJleHAiOjE3NTQyMzE0Mjh9.UE7P6bpoAuCZE7sxjLnf89cbyEtFZ3QNh06pOabZBME",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/user/all-user?page=1&limit=5",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"all-user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllAgent",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU1NjAwNDYyLCJleHAiOjE3NTU2ODY4NjJ9.ctsQTodMuBNONXdiEsThP0uHuOKgql8iiQLPNBtGMa8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/user/all-agent?page=1&limit=10",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"all-agent"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-users",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU0MTQ1MDI4LCJleHAiOjE3NTQyMzE0Mjh9.UE7P6bpoAuCZE7sxjLnf89cbyEtFZ3QNh06pOabZBME",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"agent emon\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/user/update/688e14494a4d28366a914be1",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"update",
+								"688e14494a4d28366a914be1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "agent-status-change",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU0MTQ1MDI4LCJleHAiOjE3NTQyMzE0Mjh9.UE7P6bpoAuCZE7sxjLnf89cbyEtFZ3QNh06pOabZBME",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isActive\":\"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/user/agent/approve-reject/688e0e2c6ee56a8a80b68dbb",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"agent",
+								"approve-reject",
+								"688e0e2c6ee56a8a80b68dbb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/v1/user/update-me",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzQiLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3NTYxNTE5MDUsImV4cCI6MTc1NjIzODMwNX0.trFcwWPqMHNoY-iLQDrQg4xD81vLSuJP4N15uoVPfas",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"6bvfdv3848457fbbfhbf\",\r\n    \"amount\":100000\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/update-me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"update-me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "wallet",
+			"item": [
+				{
+					"name": "USER",
+					"item": [
+						{
+							"name": "my-wallet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzYiLCJlbWFpbCI6InVzZXJAeW9wbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjE0OTgwMCwiZXhwIjoxNzU2MjM2MjAwfQ.TmFaLF_9BpqKVYHISLvj2wd69QCmFX2KItDeStaV9HA",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/v1/wallet/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add-money",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzQiLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3NTYxNTE5MDUsImV4cCI6MTc1NjIzODMwNX0.trFcwWPqMHNoY-iLQDrQg4xD81vLSuJP4N15uoVPfas",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"6bvfdv3848457fbbfhbf\",\r\n    \"amount\":100000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/v1/wallet/add-money",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"add-money"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "withdraw-money",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYWI4MjIyZTdmY2IwYjAzYWM4ZmIiLCJlbWFpbCI6InVzZXJAeW9wbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NDA0OTg0NCwiZXhwIjoxNzU0MTM2MjQ0fQ.Z30QLgByhJeY_pMNzQFeqs5QnkyJwrwZ-qrTNLfe1a4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\":50\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://epay-backend.vercel.app/api/v1/wallet/withdraw-money",
+									"protocol": "https",
+									"host": [
+										"epay-backend",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"withdraw-money"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "send-money",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMTA4NWQ2ZTNkYmE4ZGQyNDI3YzYiLCJlbWFpbCI6InVzZXJAeW9wbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NDE0NTIxMiwiZXhwIjoxNzU0MjMxNjEyfQ.xCPiE6hqkTyivDfPHsKcko9dQ_P3YaRb7Ou_VxG0U64",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"receiverEmailOrPhone\":\"user2@yopmail.com\",\r\n    \"amount\":150\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://epay-backend.vercel.app/api/v1/wallet/send-money",
+									"protocol": "https",
+									"host": [
+										"epay-backend",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"send-money"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "AGENT",
+					"item": [
+						{
+							"name": "cash-in",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGUyYzZlZTU2YThhODBiNjhkYmIiLCJlbWFpbCI6ImFnZW50QHlvcG1haWwuY29tIiwicm9sZSI6IkFHRU5UIiwiaWF0IjoxNzU0MTQ1MzkxLCJleHAiOjE3NTQyMzE3OTF9.zoV-UW_aqEzjupwU-A_qBEgYB1lpczB77tESBsddb_k",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":\"688e1085d6e3dba8dd2427c6\",\r\n    \"amount\":10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://epay-backend.vercel.app/api/v1/wallet/cash-in",
+									"protocol": "https",
+									"host": [
+										"epay-backend",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"cash-in"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cash-out",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGUyYzZlZTU2YThhODBiNjhkYmIiLCJlbWFpbCI6ImFnZW50QHlvcG1haWwuY29tIiwicm9sZSI6IkFHRU5UIiwiaWF0IjoxNzU0MTQ1MzkxLCJleHAiOjE3NTQyMzE3OTF9.zoV-UW_aqEzjupwU-A_qBEgYB1lpczB77tESBsddb_k",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":\"688e1085d6e3dba8dd2427c6\",\r\n    \"amount\":1000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://epay-backend.vercel.app/api/v1/wallet/cash-out",
+									"protocol": "https",
+									"host": [
+										"epay-backend",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"cash-out"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ADMIN",
+					"item": [
+						{
+							"name": "all-wallet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU0MTQ1NjMyLCJleHAiOjE3NTQyMzIwMzJ9.69ecVVOV1a0cRXCxoIlyrgwRPHFDtm-7GBGyw08mRi0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://epay-backend.vercel.app/api/v1/wallet/admin/all?page=1&limit=3",
+									"protocol": "https",
+									"host": [
+										"epay-backend",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"admin",
+										"all"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "block-active-wallet",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYTk5NjY5MGZlNTgwODQwNzIxODgiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU0MDUwNzQ4LCJleHAiOjE3NTQxMzcxNDh9.3Ajq58KQ5nooFGVFxdf2iMa1r7VxVg0TxM5itx362ew",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://epay-backend.vercel.app/api/v1/wallet/admin/block/688ca7dc7f50bea603fc144a",
+									"protocol": "https",
+									"host": [
+										"epay-backend",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wallet",
+										"admin",
+										"block",
+										"688ca7dc7f50bea603fc144a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "my-transaction",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYThjMGQ5MDg5ODk0MWMwMWU5OTIiLCJlbWFpbCI6ImFnZW50QHlvcG1haWwuY29tIiwicm9sZSI6IkFHRU5UIiwiaWF0IjoxNzU0MDUwNDYzLCJleHAiOjE3NTQxMzY4NjN9.A5S3bm9oVK8hC-uPpGIwDP85tbCf3B4jsjQUtN8oGCU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/transaction/me",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all-transaction",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYTk5NjY5MGZlNTgwODQwNzIxODgiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU0MTI2NDcwLCJleHAiOjE3NTQyMTI4NzB9.ctbdTt6geDt7qfl2cKpbNJmNXIzFp3FbSDOu5m-8bSU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/transaction/admin/all?page=2&limit=5",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"admin",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "agent-comission",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYThjMGQ5MDg5ODk0MWMwMWU5OTIiLCJlbWFpbCI6ImFnZW50QHlvcG1haWwuY29tIiwicm9sZSI6IkFHRU5UIiwiaWF0IjoxNzU0MTM4MzY2LCJleHAiOjE3NTQyMjQ3NjZ9.6gHWFsCO-SPfqb5VuHr8rAFd0YZbNwN6UiG5TI1tNYM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://epay-backend.vercel.app/api/v1/transaction/agent/commission/688ca8c0d90898941c01e992?page=1&limit=5",
+							"protocol": "https",
+							"host": [
+								"epay-backend",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"agent",
+								"commission",
+								"688ca8c0d90898941c01e992"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "systemConfig",
+			"item": [
+				{
+					"name": "getSystemConfig",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGUyYzZlZTU2YThhODBiNjhkYmIiLCJlbWFpbCI6ImFnZW50QHlvcG1haWwuY29tIiwicm9sZSI6IkFHRU5UIiwiaWF0IjoxNzU1NTE5NzQ2LCJleHAiOjE3NTU2MDYxNDZ9.aecN9HZQ9GnAVTPOq-yFUoKpGMbzcD0316vsjV7iXB4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/system-config",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"system-config"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upsertSystemConfig",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU1NTIwMDg4LCJleHAiOjE3NTU2MDY0ODh9.RZUOtZ5qFS_ZeJlog7Kct0b-Dnot-9FNf4QvTnsnl3E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"agentCashInRate\": 0.01,\r\n  \"agentCashOutRate\": 0.01,\r\n  \"userSendMoneyRate\": 0.005,\r\n  \"userWithdrawRate\": 0.03\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/system-config",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"system-config"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "stats",
+			"item": [
+				{
+					"name": "system-summary",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU1NjAwNDYyLCJleHAiOjE3NTU2ODY4NjJ9.ctsQTodMuBNONXdiEsThP0uHuOKgql8iiQLPNBtGMa8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/stats/system-summary",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"stats",
+								"system-summary"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "agent-commission",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU1NjAwNDYyLCJleHAiOjE3NTU2ODY4NjJ9.ctsQTodMuBNONXdiEsThP0uHuOKgql8iiQLPNBtGMa8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@yopmail.com\",\r\n    \"password\":\"123@Emon\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/stats/agent-commission?isActive=ACTIVE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"stats",
+								"agent-commission"
+							],
+							"query": [
+								{
+									"key": "isActive",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "system-transactions",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhlMGRmZTZlZTU2YThhODBiNjhkYjEiLCJlbWFpbCI6ImFkbWluQHlvcG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzU1NjAwNDYyLCJleHAiOjE3NTU2ODY4NjJ9.ctsQTodMuBNONXdiEsThP0uHuOKgql8iiQLPNBtGMa8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/stats/system-transactions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"stats",
+								"system-transactions"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OTP",
+			"item": [
+				{
+					"name": "send",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"user@yopmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/otp/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"otp",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"agent@yopmail.com\",\r\n    \"otp\":\"300168\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/otp/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"otp",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
