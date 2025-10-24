@@ -117,7 +117,19 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Actions */}
         <View style={styles.section}>
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity 
+            style={styles.actionItem}
+            onPress={() => navigation.navigate('EditProfile')}
+          >
+            <Icon name="edit" size={20} color={COLORS.textPrimary} />
+            <Text style={styles.actionText}>Edit Profile</Text>
+            <Icon name="chevron-right" size={20} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.actionItem}
+            onPress={() => navigation.navigate('ChangePassword')}
+          >
             <Icon name="lock" size={20} color={COLORS.textPrimary} />
             <Text style={styles.actionText}>Change Password</Text>
             <Icon name="chevron-right" size={20} color={COLORS.textSecondary} />

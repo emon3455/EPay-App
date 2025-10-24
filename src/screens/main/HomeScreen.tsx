@@ -1,16 +1,27 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  RefreshControl, 
+  TouchableOpacity,
+  Dimensions,
+  ImageBackground,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/Feather';
-import { WalletCard, QuickAction, TransactionItem } from '../../components';
+import { TransactionItem } from '../../components';
 import { COLORS } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchWallet, fetchTransactions } from '../../store/slices/walletSlice';
-import { logoutUser } from '../../store/slices/authSlice';
 import { MainStackParamList } from '../../navigation/types';
+import LinearGradient from 'react-native-linear-gradient';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Home'>;
+
+const { width } = Dimensions.get('window');
 
 export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -33,11 +44,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
     setRefreshing(false);
   };
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
-
-  const recentTransactions = transactions.slice(0, 5);
+  const recentTransactions = transactions.slice(0, 4);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -45,109 +52,145 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.primary]} />
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh} 
+            colors={[COLORS.primary]}
+          />
         }
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>Hello �</Text>
-            <Text style={styles.userName}>{user?.name || 'User'}</Text>
+        {/* Header with Wallet Card */}
+        <View style={styles.headerSection}>
+          {/* Top Bar */}
+          <View style={styles.topBar}>
+            <View style={styles.userInfo}>
+              <Text style={styles.welcomeText}>Welcome back,</Text>
+              <Text style={styles.userName}>{user?.name || 'User'}</Text>
+            </View>
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('Profile')}
+              style={styles.avatarButton}
+            >
+              <Text style={styles.avatarText}>{user?.name?.charAt(0).toUpperCase()}</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('Profile')}
-            style={styles.profileButton}
-          >
-            <Icon name="user" size={24} color={COLORS.primary} />
-          </TouchableOpacity>
+
+          {/* Wallet Balance Card */}
+          {wallet && (
+            <View style={styles.balanceCard}>
+              <View style={styles.balanceContent}>
+                <View>
+                  <Text style={styles.balanceLabel}>Total Balance</Text>
+                  <Text style={styles.balanceAmount}>৳{wallet.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
+                </View>
+                <View style={styles.balanceActions}>
+                  <TouchableOpacity style={styles.eyeButton}>
+                    <Icon name="eye" size={18} color={COLORS.white} />
+                  </TouchableOpacity>
+                  <View style={[styles.statusDot, { backgroundColor: wallet.status === 'ACTIVE' ? '#10b981' : '#ef4444' }]} />
+                </View>
+              </View>
+            </View>
+          )}
         </View>
 
-        {/* Wallet Card */}
-        {wallet && (
-          <WalletCard
-            balance={wallet.balance}
-            status={wallet.status}
-            onRefresh={loadData}
-          />
-        )}
+        {/* Services Section */}
+        <View style={styles.servicesSection}>
+          <Text style={styles.sectionTitle}>Services</Text>
+          
+          {user?.role === 'AGENT' ? (
+            <View style={styles.servicesRow}>
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => navigation.navigate('CashIn')}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: '#10b981' }]}>
+                  <Icon name="log-in" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>Cash In</Text>
+              </TouchableOpacity>
 
-        {/* Quick Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.quickActions}>
-            {user?.role === 'AGENT' ? (
-              <>
-                <QuickAction
-                  icon="plus-circle"
-                  label="Cash-In"
-                  color={COLORS.success}
-                  onPress={() => navigation.navigate('CashIn')}
-                />
-                <QuickAction
-                  icon="minus-circle"
-                  label="Cash-Out"
-                  color={COLORS.error}
-                  onPress={() => navigation.navigate('CashOut')}
-                />
-                <QuickAction
-                  icon="clock"
-                  label="History"
-                  color={COLORS.info}
-                  onPress={() => navigation.navigate('Transactions')}
-                />
-                <QuickAction
-                  icon="trending-up"
-                  label="Commission"
-                  color={COLORS.warning}
-                  onPress={() => {/* TODO: Show commission */}}
-                />
-              </>
-            ) : (
-              <>
-                <QuickAction
-                  icon="arrow-up-circle"
-                  label="Send Money"
-                  color={COLORS.primary}
-                  onPress={() => navigation.navigate('SendMoney')}
-                />
-                <QuickAction
-                  icon="arrow-down-circle"
-                  label="Add Money"
-                  color={COLORS.success}
-                  onPress={() => navigation.navigate('AddMoney')}
-                />
-                <QuickAction
-                  icon="arrow-up"
-                  label="Withdraw"
-                  color={COLORS.warning}
-                  onPress={() => navigation.navigate('WithdrawMoney')}
-                />
-                <QuickAction
-                  icon="clock"
-                  label="History"
-                  color={COLORS.info}
-                  onPress={() => navigation.navigate('Transactions')}
-                />
-              </>
-            )}
-          </View>
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => navigation.navigate('CashOut')}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: '#f59e0b' }]}>
+                  <Icon name="log-out" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>Cash Out</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => {/* TODO: Show commission */}}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: '#8b5cf6' }]}>
+                  <Icon name="award" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>Earnings</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => navigation.navigate('Transactions')}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: '#3b82f6' }]}>
+                  <Icon name="list" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>History</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.servicesRow}>
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => navigation.navigate('SendMoney')}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: COLORS.primary }]}>
+                  <Icon name="send" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>Send</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => navigation.navigate('WithdrawMoney')}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: '#f59e0b' }]}>
+                  <Icon name="download" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>Withdraw</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.serviceItem}
+                onPress={() => navigation.navigate('Transactions')}
+              >
+                <View style={[styles.serviceIcon, { backgroundColor: '#3b82f6' }]}>
+                  <Icon name="clock" size={22} color={COLORS.white} />
+                </View>
+                <Text style={styles.serviceLabel}>History</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
 
         {/* Recent Transactions */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
+        <View style={styles.transactionsSection}>
+          <View style={styles.transactionHeader}>
             <Text style={styles.sectionTitle}>Recent Transactions</Text>
-            {transactions.length > 5 && (
+            {transactions.length > 4 && (
               <TouchableOpacity onPress={() => navigation.navigate('Transactions')}>
-                <Text style={styles.seeAll}>See All</Text>
+                <Text style={styles.viewAll}>View All</Text>
               </TouchableOpacity>
             )}
           </View>
 
           {recentTransactions.length === 0 ? (
-            <View style={styles.emptyState}>
-              <Icon name="inbox" size={48} color={COLORS.gray300} />
-              <Text style={styles.emptyText}>No transactions yet</Text>
+            <View style={styles.emptyContainer}>
+              <Icon name="file-text" size={48} color={COLORS.gray300} />
+              <Text style={styles.emptyTitle}>No transactions yet</Text>
+              <Text style={styles.emptySubtitle}>Your recent transactions will appear here</Text>
             </View>
           ) : (
             recentTransactions.map((transaction) => (
@@ -159,6 +202,8 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
             ))
           )}
         </View>
+
+        <View style={{ height: 30 }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -167,72 +212,170 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: '#f8f9fa',
   },
   scrollView: {
     flex: 1,
-    padding: 20,
   },
-  header: {
+  headerSection: {
+    backgroundColor: COLORS.primary,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+    paddingTop: 10,
+  },
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 24,
   },
-  greeting: {
+  userInfo: {
+    flex: 1,
+  },
+  welcomeText: {
     fontSize: 14,
-    color: COLORS.textSecondary,
+    color: COLORS.white,
+    opacity: 0.9,
     marginBottom: 4,
   },
   userName: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.textPrimary,
+    fontWeight: '700',
+    color: COLORS.white,
   },
-  profileButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+  avatarButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: COLORS.gray900,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
-  section: {
-    marginBottom: 24,
+  avatarText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: COLORS.primary,
   },
-  sectionHeader: {
+  balanceCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 20,
+    padding: 20,
+  },
+  balanceContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+  },
+  balanceLabel: {
+    fontSize: 13,
+    color: COLORS.white,
+    opacity: 0.9,
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  balanceAmount: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: COLORS.white,
+    letterSpacing: -0.5,
+  },
+  balanceActions: {
+    alignItems: 'center',
+    gap: 12,
+  },
+  eyeButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: COLORS.white,
+  },
+  servicesSection: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 16,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
     color: COLORS.textPrimary,
+    marginBottom: 16,
   },
-  seeAll: {
+  servicesRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  serviceItem: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  serviceIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  serviceLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+  },
+  transactionsSection: {
+    paddingHorizontal: 20,
+    paddingTop: 8,
+  },
+  transactionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  viewAll: {
     fontSize: 14,
     fontWeight: '600',
     color: COLORS.primary,
   },
-  quickActions: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 16,
-  },
-  emptyState: {
+  emptyContainer: {
     alignItems: 'center',
-    paddingVertical: 40,
+    justifyContent: 'center',
+    paddingVertical: 48,
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    marginTop: 8,
   },
-  emptyText: {
+  emptyTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+    marginTop: 16,
+    marginBottom: 4,
+  },
+  emptySubtitle: {
     fontSize: 14,
     color: COLORS.textSecondary,
-    marginTop: 12,
+    textAlign: 'center',
   },
 });

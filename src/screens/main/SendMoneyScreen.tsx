@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   TextInput,
   ActivityIndicator,
   FlatList,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -41,22 +42,21 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
   const [amount, setAmount] = useState('');
   const [users, setUsers] = useState<User[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState<{ recipient?: string; amount?: string }>({});
   const [recentUsers, setRecentUsers] = useState<User[]>([]);
 
   // Debounced search
   useEffect(() => {
-    if (searchQuery.length > 0) {
+    if (searchQuery.length > 0 && showModal) {
       const timer = setTimeout(() => {
         searchUsers(searchQuery);
       }, 300);
       return () => clearTimeout(timer);
-    } else {
+    } else if (searchQuery.length === 0 && showModal) {
       setUsers([]);
-      setShowDropdown(false);
     }
-  }, [searchQuery]);
+  }, [searchQuery, showModal]);
 
   const searchUsers = async (query: string) => {
     if (!query.trim()) return;
@@ -71,7 +71,6 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
       
       if (response.data.success) {
         setUsers(response.data.data || []);
-        setShowDropdown(true);
       }
     } catch (error: any) {
       console.error('Search error:', error);
@@ -83,8 +82,8 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleSelectUser = (user: User) => {
     setSelectedUser(user);
-    setSearchQuery(`${user.name} • ${user.email || user.phone || ''}`);
-    setShowDropdown(false);
+    setShowModal(false);
+    setSearchQuery('');
     setErrors({ ...errors, recipient: undefined });
     
     // Add to recent users
@@ -92,6 +91,12 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
       const filtered = prev.filter(u => u._id !== user._id);
       return [user, ...filtered].slice(0, 6);
     });
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+    setSearchQuery('');
+    setUsers([]);
   };
 
   const validateForm = (): boolean => {
@@ -132,8 +137,6 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
 
   const clearSelection = () => {
     setSelectedUser(null);
-    setSearchQuery('');
-    setShowDropdown(false);
   };
 
   const calculateFee = () => {
@@ -176,83 +179,29 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
 
           {/* Form */}
           <View style={styles.form}>
-            {/* Recipient Search */}
+            {/* Recipient Selector */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Recipient</Text>
-              <View style={styles.searchContainer}>
+              <TouchableOpacity
+                style={styles.recipientSelector}
+                onPress={openModal}
+              >
                 <Icon name="user" size={18} color={COLORS.gray500} style={styles.inputIcon} />
-                <TextInput
-                  style={styles.searchInput}
-                  placeholder="Search name, phone or email..."
-                  placeholderTextColor={COLORS.gray400}
-                  value={searchQuery}
-                  onChangeText={(text) => {
-                    setSearchQuery(text);
-                    if (selectedUser) {
-                      setSelectedUser(null);
-                    }
-                  }}
-                  onFocus={() => {
-                    if (searchQuery && users.length > 0) {
-                      setShowDropdown(true);
-                    }
-                  }}
-                />
-                {selectedUser && (
-                  <TouchableOpacity onPress={clearSelection} style={styles.clearButton}>
-                    <Icon name="x" size={18} color={COLORS.gray500} />
-                  </TouchableOpacity>
-                )}
-                {isSearching && (
-                  <ActivityIndicator size="small" color={COLORS.primary} style={styles.searchLoader} />
-                )}
-              </View>
+                <Text style={[styles.recipientText, !selectedUser && styles.placeholderText]}>
+                  {selectedUser 
+                    ? `${selectedUser.name} • ${selectedUser.email || selectedUser.phone || ''}`
+                    : 'Search name, phone or email...'
+                  }
+                </Text>
+                <Icon name="chevron-down" size={18} color={COLORS.gray500} />
+              </TouchableOpacity>
               {errors.recipient && (
                 <Text style={styles.errorText}>{errors.recipient}</Text>
-              )}
-
-              {/* Search Results Dropdown */}
-              {showDropdown && users.length > 0 && (
-                <View style={styles.dropdown}>
-                  <FlatList
-                    data={users}
-                    keyExtractor={(item) => item._id}
-                    renderItem={({ item }) => (
-                      <TouchableOpacity
-                        style={styles.dropdownItem}
-                        onPress={() => handleSelectUser(item)}
-                      >
-                        <View style={styles.userAvatar}>
-                          <Icon name="user" size={16} color={COLORS.primary} />
-                        </View>
-                        <View style={styles.userInfo}>
-                          <Text style={styles.userName}>{item.name}</Text>
-                          <Text style={styles.userContact}>
-                            {item.email || item.phone || '—'}
-                          </Text>
-                        </View>
-                        {selectedUser?._id === item._id && (
-                          <Icon name="check" size={16} color={COLORS.success} />
-                        )}
-                      </TouchableOpacity>
-                    )}
-                    style={styles.dropdownList}
-                    keyboardShouldPersistTaps="handled"
-                  />
-                </View>
-              )}
-
-              {/* No results message */}
-              {showDropdown && !isSearching && users.length === 0 && searchQuery.length > 0 && (
-                <View style={styles.noResults}>
-                  <Icon name="search" size={24} color={COLORS.gray400} />
-                  <Text style={styles.noResultsText}>No users found</Text>
-                </View>
               )}
             </View>
 
             {/* Recent Recipients */}
-            {!showDropdown && recentUsers.length > 0 && !selectedUser && (
+            {recentUsers.length > 0 && !selectedUser && (
               <View style={styles.recentContainer}>
                 <Text style={styles.recentLabel}>Recent</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.recentScroll}>
@@ -322,6 +271,91 @@ export const SendMoneyScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      {/* Search Modal */}
+      <Modal
+        visible={showModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Modal Header */}
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Recipient</Text>
+              <TouchableOpacity onPress={() => setShowModal(false)}>
+                <Icon name="x" size={24} color={COLORS.textPrimary} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Search Input */}
+            <View style={styles.modalSearchContainer}>
+              <Icon name="search" size={18} color={COLORS.gray500} style={styles.inputIcon} />
+              <TextInput
+                style={styles.modalSearchInput}
+                placeholder="Search users..."
+                placeholderTextColor={COLORS.gray400}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                autoFocus={true}
+              />
+              {isSearching && (
+                <ActivityIndicator size="small" color={COLORS.primary} />
+              )}
+            </View>
+
+            {/* Results List */}
+            <FlatList
+              data={users}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.modalUserItem}
+                  onPress={() => handleSelectUser(item)}
+                >
+                  <View style={styles.userAvatar}>
+                    <Icon name="user" size={16} color={COLORS.primary} />
+                  </View>
+                  <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{item.name}</Text>
+                    <Text style={styles.userContact}>
+                      {item.email || item.phone || '—'}
+                    </Text>
+                  </View>
+                  {selectedUser?._id === item._id && (
+                    <Icon name="check" size={18} color={COLORS.success} />
+                  )}
+                </TouchableOpacity>
+              )}
+              ListEmptyComponent={
+                searchQuery.length > 0 ? (
+                  <View style={styles.emptyState}>
+                    {isSearching ? (
+                      <>
+                        <ActivityIndicator size="large" color={COLORS.primary} />
+                        <Text style={styles.emptyText}>Searching...</Text>
+                      </>
+                    ) : (
+                      <>
+                        <Icon name="search" size={48} color={COLORS.gray300} />
+                        <Text style={styles.emptyText}>No users found</Text>
+                      </>
+                    )}
+                  </View>
+                ) : (
+                  <View style={styles.emptyState}>
+                    <Icon name="users" size={48} color={COLORS.gray300} />
+                    <Text style={styles.emptyText}>Start typing to search users</Text>
+                  </View>
+                )
+              }
+              style={styles.modalList}
+              keyboardShouldPersistTaps="handled"
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -371,7 +405,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 16,
-    zIndex: 1000,
   },
   label: {
     fontSize: 14,
@@ -379,7 +412,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     marginBottom: 8,
   },
-  searchContainer: {
+  recipientSelector: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
@@ -392,48 +425,68 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginRight: 8,
   },
-  searchInput: {
+  recipientText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 15,
     color: COLORS.textPrimary,
-    paddingVertical: 0,
   },
-  clearButton: {
-    padding: 4,
-    marginLeft: 8,
-  },
-  searchLoader: {
-    marginLeft: 8,
+  placeholderText: {
+    color: COLORS.gray400,
   },
   errorText: {
     fontSize: 12,
     color: COLORS.error,
     marginTop: 4,
   },
-  dropdown: {
-    position: 'absolute',
-    top: 76,
-    left: 0,
-    right: 0,
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
     backgroundColor: COLORS.white,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    maxHeight: 240,
-    shadowColor: COLORS.gray900,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-    zIndex: 1001,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+    paddingBottom: 20,
   },
-  dropdownList: {
-    maxHeight: 240,
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
   },
-  dropdownItem: {
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+  },
+  modalSearchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
+    backgroundColor: COLORS.gray100,
+    borderRadius: 12,
+    marginHorizontal: 20,
+    marginTop: 16,
+    paddingHorizontal: 12,
+    height: 48,
+  },
+  modalSearchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: COLORS.textPrimary,
+    paddingVertical: 0,
+  },
+  modalList: {
+    marginTop: 16,
+  },
+  modalUserItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    marginHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
   },
@@ -459,19 +512,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textSecondary,
   },
-  noResults: {
+  emptyState: {
     alignItems: 'center',
-    padding: 24,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    marginTop: 8,
+    justifyContent: 'center',
+    paddingVertical: 60,
   },
-  noResultsText: {
+  emptyText: {
     fontSize: 14,
     color: COLORS.gray400,
-    marginTop: 8,
+    marginTop: 16,
   },
   recentContainer: {
     marginBottom: 16,

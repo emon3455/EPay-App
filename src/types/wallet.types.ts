@@ -34,6 +34,7 @@ export interface AddMoneyData {
 
 export interface WithdrawMoneyData {
   amount: number;
+  agentId: string;
 }
 
 export interface SendMoneyData {

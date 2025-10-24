@@ -7,6 +7,8 @@ import {
   WithdrawMoneyScreen,
   TransactionsScreen,
   ProfileScreen,
+  EditProfileScreen,
+  ChangePasswordScreen,
   CashInScreen,
   CashOutScreen,
 } from '../screens';
@@ -23,6 +25,8 @@ export const MainNavigator: React.FC = () => {
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       <Stack.Screen name="SendMoney" component={SendMoneyScreen} />
       <Stack.Screen name="AddMoney" component={AddMoneyScreen} />
       <Stack.Screen name="WithdrawMoney" component={WithdrawMoneyScreen} />

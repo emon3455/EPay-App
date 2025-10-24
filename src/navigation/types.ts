@@ -6,6 +6,8 @@ export type AuthStackParamList = {
 export type MainStackParamList = {
   Home: undefined;
   Profile: undefined;
+  EditProfile: undefined;
+  ChangePassword: undefined;
   SendMoney: undefined;
   AddMoney: undefined;
   WithdrawMoney: undefined;
