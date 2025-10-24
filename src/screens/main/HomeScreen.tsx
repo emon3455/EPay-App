@@ -102,7 +102,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
                       color={COLORS.white} 
                     />
                   </TouchableOpacity>
-                  <View style={[styles.statusDot, { backgroundColor: wallet.status === 'ACTIVE' ? '#10b981' : '#ef4444' }]} />
+                  <View style={[styles.statusDot, { backgroundColor: wallet.isActive === 'ACTIVE' ? '#10b981' : '#ef4444' }]} />
                 </View>
               </View>
             </View>

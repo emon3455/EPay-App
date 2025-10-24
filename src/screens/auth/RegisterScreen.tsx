@@ -8,14 +8,15 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Feather';
 import { Button, Input } from '../../components';
 import { COLORS } from '../../constants';
-import { validateEmail, validatePassword, validatePhone, validateName } from '../../utils';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { registerUser, clearError } from '../../store/slices/authSlice';
+import { validateEmail, validatePassword, validateName } from '../../utils';
+import { AuthService } from '../../services';
 import { AuthStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
@@ -23,39 +24,31 @@ type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 interface FormErrors {
   name?: string;
   email?: string;
-  phone?: string;
   password?: string;
   confirmPassword?: string;
+  acceptTerms?: string;
 }
 
 export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
-  const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector((state) => state.auth);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
     role: 'USER' as 'USER' | 'AGENT',
+    acceptTerms: false,
   });
   const [errors, setErrors] = useState<FormErrors>({});
-
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Registration Failed', error);
-      dispatch(clearError());
-    }
-  }, [error, dispatch]);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
     if (!formData.name) {
       newErrors.name = 'Name is required';
-    } else if (!validateName(formData.name)) {
-      newErrors.name = 'Name must be at least 3 characters';
+    } else if (formData.name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
     }
 
     if (!formData.email) {
@@ -64,16 +57,18 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
       newErrors.email = 'Please enter a valid email';
     }
 
-    if (!formData.phone) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!validatePhone(formData.phone)) {
-      newErrors.phone = 'Please enter a valid phone number';
-    }
-
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (!validatePassword(formData.password)) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else {
+      if (formData.password.length < 8) {
+        newErrors.password = 'Password must be at least 8 characters';
+      } else if (!/[A-Z]/.test(formData.password)) {
+        newErrors.password = 'Password must contain at least 1 uppercase letter';
+      } else if (!/[!@#$%^&*]/.test(formData.password)) {
+        newErrors.password = 'Password must contain at least 1 special character (!@#$%^&*)';
+      } else if (!/\d/.test(formData.password)) {
+        newErrors.password = 'Password must contain at least 1 number';
+      }
     }
 
     if (!formData.confirmPassword) {
@@ -82,22 +77,99 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
+    if (!formData.acceptTerms) {
+      newErrors.acceptTerms = 'You must accept the terms and privacy policy';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleRegister = async () => {
-    if (validateForm()) {
-      const { confirmPassword, ...registerData } = formData;
-      dispatch(registerUser(registerData));
+    setHasAttemptedSubmit(true);
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const { confirmPassword, acceptTerms, ...registerData } = formData;
+      const response = await AuthService.register(registerData);
+      
+      if (response.success) {
+        Alert.alert(
+          'Success',
+          'Account created! Please verify your email.',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('VerifyOTP', { email: formData.email }),
+            },
+          ]
+        );
+      } else {
+        Alert.alert('Error', response.message || 'Registration failed');
+      }
+    } catch (error: any) {
+      const message = error?.response?.data?.message || 'Registration failed. Please try again.';
+      Alert.alert('Error', message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const updateFormData = (key: string, value: string) => {
     setFormData({ ...formData, [key]: value });
-    // Clear error for this field
-    if (errors[key as keyof FormErrors]) {
-      setErrors({ ...errors, [key]: undefined });
+    
+    // Revalidate if user has already attempted submit
+    if (hasAttemptedSubmit) {
+      // Revalidate the form to update errors in real-time
+      const newErrors: FormErrors = {};
+      const updatedFormData = { ...formData, [key]: value };
+
+      // Validate name
+      if (key === 'name' || !updatedFormData.name) {
+        if (!updatedFormData.name) {
+          newErrors.name = 'Name is required';
+        } else if (updatedFormData.name.length < 2) {
+          newErrors.name = 'Name must be at least 2 characters';
+        }
+      }
+
+      // Validate email
+      if (key === 'email' || !updatedFormData.email) {
+        if (!updatedFormData.email) {
+          newErrors.email = 'Email is required';
+        } else if (!validateEmail(updatedFormData.email)) {
+          newErrors.email = 'Please enter a valid email';
+        }
+      }
+
+      // Validate password
+      if (key === 'password' || !updatedFormData.password) {
+        if (!updatedFormData.password) {
+          newErrors.password = 'Password is required';
+        } else {
+          if (updatedFormData.password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters';
+          } else if (!/[A-Z]/.test(updatedFormData.password)) {
+            newErrors.password = 'Password must contain at least 1 uppercase letter';
+          } else if (!/[!@#$%^&*]/.test(updatedFormData.password)) {
+            newErrors.password = 'Password must contain at least 1 special character (!@#$%^&*)';
+          } else if (!/\d/.test(updatedFormData.password)) {
+            newErrors.password = 'Password must contain at least 1 number';
+          }
+        }
+      }
+
+      // Validate confirm password
+      if (key === 'confirmPassword' || key === 'password') {
+        if (!updatedFormData.confirmPassword) {
+          newErrors.confirmPassword = 'Please confirm your password';
+        } else if (updatedFormData.password !== updatedFormData.confirmPassword) {
+          newErrors.confirmPassword = 'Passwords do not match';
+        }
+      }
+
+      setErrors(newErrors);
     }
   };
 
@@ -156,7 +228,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           <View style={styles.form}>
             <Input
               label="Full Name"
-              placeholder="Enter your full name"
+              placeholder="John Doe"
               value={formData.name}
               onChangeText={(value) => updateFormData('name', value)}
               leftIcon="user"
@@ -165,7 +237,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
             <Input
               label="Email Address"
-              placeholder="Enter your email"
+              placeholder="john.doe@company.com"
               value={formData.email}
               onChangeText={(value) => updateFormData('email', value)}
               keyboardType="email-address"
@@ -175,18 +247,8 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
             />
 
             <Input
-              label="Phone Number"
-              placeholder="01XXXXXXXXX"
-              value={formData.phone}
-              onChangeText={(value) => updateFormData('phone', value)}
-              keyboardType="phone-pad"
-              leftIcon="phone"
-              error={errors.phone}
-            />
-
-            <Input
               label="Password"
-              placeholder="Create a password"
+              placeholder="Min 8 chars, 1 uppercase, 1 number, 1 special char"
               value={formData.password}
               onChangeText={(value) => updateFormData('password', value)}
               isPassword
@@ -204,6 +266,23 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               error={errors.confirmPassword}
             />
 
+            {/* Accept Terms */}
+            <TouchableOpacity
+              style={styles.termsCheckbox}
+              onPress={() => setFormData({ ...formData, acceptTerms: !formData.acceptTerms })}>
+              <View style={[styles.checkbox, formData.acceptTerms && styles.checkboxChecked]}>
+                {formData.acceptTerms && <Icon name="check" size={16} color={COLORS.white} />}
+              </View>
+              <Text style={styles.termsCheckboxText}>
+                I agree to the{' '}
+                <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
+                <Text style={styles.termsLink}>Privacy Policy</Text>
+              </Text>
+            </TouchableOpacity>
+            {errors.acceptTerms && (
+              <Text style={styles.errorText}>{errors.acceptTerms}</Text>
+            )}
+
             <Button
               title="Create Account"
               onPress={handleRegister}
@@ -219,13 +298,6 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.signInText}>Sign In</Text>
             </TouchableOpacity>
           </View>
-
-          {/* Terms */}
-          <Text style={styles.termsText}>
-            By signing up, you agree to our{' '}
-            <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
-            <Text style={styles.termsLink}>Privacy Policy</Text>
-          </Text>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -295,6 +367,44 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 24,
   },
+  termsCheckbox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 16,
+    marginBottom: 4,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+    marginRight: 10,
+  },
+  checkboxChecked: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  termsCheckboxText: {
+    flex: 1,
+    fontSize: 13,
+    color: COLORS.textSecondary,
+    lineHeight: 20,
+  },
+  termsLink: {
+    color: COLORS.primary,
+    fontWeight: '700',
+  },
+  errorText: {
+    fontSize: 12,
+    color: COLORS.error,
+    marginLeft: 30,
+    marginTop: 4,
+  },
   registerButton: {
     marginTop: 8,
   },
@@ -312,16 +422,6 @@ const styles = StyleSheet.create({
   signInText: {
     color: COLORS.primary,
     fontSize: 14,
-    fontWeight: '600',
-  },
-  termsText: {
-    textAlign: 'center',
-    fontSize: 12,
-    color: COLORS.textSecondary,
-    marginBottom: 24,
-  },
-  termsLink: {
-    color: COLORS.primary,
     fontWeight: '600',
   },
 });

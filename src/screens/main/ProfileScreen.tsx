@@ -66,7 +66,51 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Account Details */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account Details</Text>
+          <Text style={styles.sectionTitle}>Account Information</Text>
+          
+          {/* Account Status Card */}
+          <View style={styles.statusCard}>
+            <View style={styles.statusIconContainer}>
+              <Icon name="shield" size={24} color={COLORS.primary} />
+            </View>
+            <View style={styles.statusContent}>
+              <Text style={styles.statusLabel}>Account Status</Text>
+              <View style={[
+                styles.statusBadge,
+                { backgroundColor: user?.isActive === 'ACTIVE' ? COLORS.success + '20' : COLORS.warning + '20' }
+              ]}>
+                <Text style={[
+                  styles.statusValue,
+                  { color: user?.isActive === 'ACTIVE' ? COLORS.success : COLORS.warning }
+                ]}>
+                  {user?.isActive || 'N/A'}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Wallet Status Card */}
+          {wallet && (
+            <View style={styles.statusCard}>
+              <View style={styles.statusIconContainer}>
+                <Icon name="credit-card" size={24} color={COLORS.primary} />
+              </View>
+              <View style={styles.statusContent}>
+                <Text style={styles.statusLabel}>Wallet Status</Text>
+                <View style={[
+                  styles.statusBadge,
+                  { backgroundColor: wallet.isActive === 'ACTIVE' ? COLORS.success + '20' : COLORS.error + '20' }
+                ]}>
+                  <Text style={[
+                    styles.statusValue,
+                    { color: wallet.isActive === 'ACTIVE' ? COLORS.success : COLORS.error }
+                  ]}>
+                    {wallet.isActive}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
           
           <View style={styles.infoItem}>
             <View style={styles.infoIconContainer}>
@@ -77,32 +121,6 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.infoValue}>{user?.phone || 'Not provided'}</Text>
             </View>
           </View>
-
-          <View style={styles.infoItem}>
-            <View style={styles.infoIconContainer}>
-              <Icon name="shield" size={20} color={COLORS.primary} />
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Account Status</Text>
-              <Text style={[styles.infoValue, { color: user?.status === 'ACTIVE' ? COLORS.success : COLORS.warning }]}>
-                {user?.status}
-              </Text>
-            </View>
-          </View>
-
-          {wallet && (
-            <View style={styles.infoItem}>
-              <View style={styles.infoIconContainer}>
-                <Icon name="credit-card" size={20} color={COLORS.primary} />
-              </View>
-              <View style={styles.infoContent}>
-                <Text style={styles.infoLabel}>Wallet Status</Text>
-                <Text style={[styles.infoValue, { color: wallet.status === 'ACTIVE' ? COLORS.success : COLORS.error }]}>
-                  {wallet.status}
-                </Text>
-              </View>
-            </View>
-          )}
 
           <View style={styles.infoItem}>
             <View style={styles.infoIconContainer}>
@@ -242,6 +260,48 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.textPrimary,
     marginBottom: 16,
+  },
+  statusCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
+    shadowColor: COLORS.gray900,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  statusIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: COLORS.primary + '15',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  statusContent: {
+    flex: 1,
+  },
+  statusLabel: {
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  statusBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  statusValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   infoItem: {
     flexDirection: 'row',

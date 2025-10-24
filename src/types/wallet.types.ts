@@ -2,7 +2,7 @@ export interface Wallet {
   _id: string;
   user: string;
   balance: number;
-  status: 'ACTIVE' | 'BLOCKED';
+  isActive: 'ACTIVE' | 'BLOCKED';
   createdAt: string;
   updatedAt: string;
 }

@@ -2,11 +2,14 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   role: 'USER' | 'AGENT' | 'ADMIN' | 'SUPER_ADMIN';
-  status: 'ACTIVE' | 'PENDING' | 'BLOCKED';
+  isActive: 'ACTIVE' | 'PENDING' | 'BLOCKED';
+  isVerified: boolean;
+  isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
+  id?: string;
 }
 
 export interface AuthResponse {
@@ -28,7 +31,7 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  phone: string;
+  phone?: string;
   role?: 'USER' | 'AGENT';
   nid?: string;
 }

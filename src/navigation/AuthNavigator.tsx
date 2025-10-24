@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LoginScreen, RegisterScreen } from '../screens/auth';
+import { LoginScreen, RegisterScreen, VerifyOTPScreen } from '../screens/auth';
 import { AuthStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -14,6 +14,7 @@ export const AuthNavigator: React.FC = () => {
       }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="VerifyOTP" component={VerifyOTPScreen} />
     </Stack.Navigator>
   );
 };

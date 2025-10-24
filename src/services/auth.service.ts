@@ -47,16 +47,23 @@ export const AuthService = {
       data
     );
 
-    // Save tokens to storage if registration includes auto-login
-    if (response.data.success && response.data.data) {
-      const { accessToken, refreshToken, user } = response.data.data;
-      if (accessToken) {
-        await StorageService.saveAccessToken(accessToken);
-        await StorageService.saveRefreshToken(refreshToken);
-        await StorageService.saveUserData(user);
-      }
-    }
+    // Note: Don't save tokens here - registration requires OTP verification first
+    return response.data;
+  },
 
+  /**
+   * Send OTP to email for verification
+   */
+  async sendOTP(email: string): Promise<any> {
+    const response = await apiClient.post(API_ENDPOINTS.SEND_OTP, { email });
+    return response.data;
+  },
+
+  /**
+   * Verify OTP code
+   */
+  async verifyOTP(email: string, otp: string): Promise<any> {
+    const response = await apiClient.post(API_ENDPOINTS.VERIFY_OTP, { email, otp });
     return response.data;
   },
 
