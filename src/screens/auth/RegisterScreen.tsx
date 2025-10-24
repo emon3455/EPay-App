@@ -111,7 +111,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           showsVerticalScrollIndicator={false}>
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.title}>Create Account 🚀</Text>
+            <Text style={styles.title}>Create Account</Text>
             <Text style={styles.subtitle}>
               Join EPay and start transacting securely
             </Text>
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
   roleButtonActive: {
     borderColor: COLORS.primary,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.primary,
   },
   roleButtonText: {
     fontSize: 16,
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   roleButtonTextActive: {
-    color: COLORS.primary,
+    color: COLORS.white,
   },
   form: {
     marginBottom: 24,
