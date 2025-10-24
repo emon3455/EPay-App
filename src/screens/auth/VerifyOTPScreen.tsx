@@ -151,7 +151,7 @@ export const VerifyOTPScreen: React.FC<Props> = ({ navigation, route }) => {
             <Icon name="arrow-left" size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
           <View style={styles.iconContainer}>
-            <Icon name="mail" size={48} color={COLORS.primary} />
+            <Icon name="mail" size={48} color={COLORS.white} />
           </View>
           <Text style={styles.title}>Verify Your Email</Text>
           <Text style={styles.subtitle}>
@@ -277,16 +277,17 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: COLORS.primary,
-    backgroundColor: COLORS.primary,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.white,
     fontSize: 24,
     fontWeight: '700',
     textAlign: 'center',
-    color: COLORS.white,
+    color: COLORS.textPrimary,
   },
   otpInputFilled: {
     borderColor: COLORS.primary,
     backgroundColor: COLORS.primary,
+    color: COLORS.white,
   },
   resendContainer: {
     flexDirection: 'row',

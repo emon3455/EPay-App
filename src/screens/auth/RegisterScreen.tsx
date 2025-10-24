@@ -24,6 +24,7 @@ type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 interface FormErrors {
   name?: string;
   email?: string;
+  phone?: string;
   password?: string;
   confirmPassword?: string;
   acceptTerms?: string;
@@ -35,6 +36,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
     role: 'USER' as 'USER' | 'AGENT',
@@ -55,6 +57,12 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
       newErrors.email = 'Email is required';
     } else if (!validateEmail(formData.email)) {
       newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^(?:\+8801\d{9}|01\d{9})$/.test(formData.phone)) {
+      newErrors.phone = 'Enter valid BD number: +8801XXXXXXXXX or 01XXXXXXXXX';
     }
 
     if (!formData.password) {
@@ -140,6 +148,15 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           newErrors.email = 'Email is required';
         } else if (!validateEmail(updatedFormData.email)) {
           newErrors.email = 'Please enter a valid email';
+        }
+      }
+
+      // Validate phone
+      if (key === 'phone' || !updatedFormData.phone) {
+        if (!updatedFormData.phone) {
+          newErrors.phone = 'Phone number is required';
+        } else if (!/^(?:\+8801\d{9}|01\d{9})$/.test(updatedFormData.phone)) {
+          newErrors.phone = 'Enter valid BD number: +8801XXXXXXXXX or 01XXXXXXXXX';
         }
       }
 
@@ -244,6 +261,16 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               autoCapitalize="none"
               leftIcon="mail"
               error={errors.email}
+            />
+
+            <Input
+              label="Phone Number"
+              placeholder="01XXXXXXXXX or +8801XXXXXXXXX"
+              value={formData.phone}
+              onChangeText={(value) => updateFormData('phone', value)}
+              keyboardType="phone-pad"
+              leftIcon="phone"
+              error={errors.phone}
             />
 
             <Input
