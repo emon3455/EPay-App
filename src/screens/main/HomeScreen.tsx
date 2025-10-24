@@ -26,6 +26,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useAppSelector((state) => state.auth);
   const { wallet, transactions, isLoading } = useAppSelector((state) => state.wallet);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isBalanceVisible, setIsBalanceVisible] = React.useState(true);
 
   useEffect(() => {
     loadData();
@@ -40,6 +41,10 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
     setRefreshing(true);
     await loadData();
     setRefreshing(false);
+  };
+
+  const toggleBalanceVisibility = () => {
+    setIsBalanceVisible(!isBalanceVisible);
   };
 
   const recentTransactions = transactions.slice(0, 4);
@@ -79,11 +84,23 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
               <View style={styles.balanceContent}>
                 <View>
                   <Text style={styles.balanceLabel}>Total Balance</Text>
-                  <Text style={styles.balanceAmount}>৳{wallet.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
+                  <Text style={styles.balanceAmount}>
+                    {isBalanceVisible 
+                      ? `৳${wallet.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                      : '৳••••••••'
+                    }
+                  </Text>
                 </View>
                 <View style={styles.balanceActions}>
-                  <TouchableOpacity style={styles.eyeButton}>
-                    <Icon name="eye" size={18} color={COLORS.white} />
+                  <TouchableOpacity 
+                    style={styles.eyeButton}
+                    onPress={toggleBalanceVisibility}
+                  >
+                    <Icon 
+                      name={isBalanceVisible ? 'eye' : 'eye-off'} 
+                      size={18} 
+                      color={COLORS.white} 
+                    />
                   </TouchableOpacity>
                   <View style={[styles.statusDot, { backgroundColor: wallet.status === 'ACTIVE' ? '#10b981' : '#ef4444' }]} />
                 </View>

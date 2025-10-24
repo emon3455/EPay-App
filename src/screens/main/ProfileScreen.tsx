@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -7,6 +7,7 @@ import { Button } from '../../components';
 import { COLORS } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logoutUser } from '../../store/slices/authSlice';
+import { fetchWallet } from '../../store/slices/walletSlice';
 import { MainStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Profile'>;
@@ -15,6 +16,11 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { wallet } = useAppSelector((state) => state.wallet);
+
+  useEffect(() => {
+    // Fetch wallet data when profile screen loads
+    dispatch(fetchWallet());
+  }, [dispatch]);
 
   const handleLogout = () => {
     Alert.alert(
