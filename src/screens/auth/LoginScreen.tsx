@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
+  Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -70,7 +71,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           showsVerticalScrollIndicator={false}>
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.title}>Welcome Back! 👋</Text>
+            <Text style={styles.title}>Welcome Back!</Text>
             <Text style={styles.subtitle}>
               Sign in to continue to EPay
             </Text>
@@ -78,9 +79,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
           {/* Logo/Icon Area */}
           <View style={styles.logoContainer}>
-            <View style={styles.logo}>
-              <Text style={styles.logoText}>💸</Text>
-            </View>
+            <Image
+              source={require('../../assets/images/login.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
           </View>
 
           {/* Form */}
@@ -130,21 +133,6 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.signUpText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-
-          {/* Divider */}
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>OR</Text>
-            <View style={styles.dividerLine} />
-          </View>
-
-          {/* Social Login */}
-          <Button
-            title="Continue with Google"
-            onPress={() => Alert.alert('Google OAuth', 'Feature coming soon!')}
-            variant="outline"
-            style={styles.socialButton}
-          />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -162,35 +150,33 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     padding: 24,
+    justifyContent: 'center',
   },
   header: {
     marginTop: 20,
     marginBottom: 32,
+    alignItems: 'center',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
     marginBottom: 8,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
     color: COLORS.textSecondary,
+    textAlign: 'center',
   },
   logoContainer: {
     alignItems: 'center',
     marginBottom: 40,
   },
   logo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: COLORS.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoText: {
-    fontSize: 48,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
   },
   form: {
     marginBottom: 24,
@@ -222,23 +208,5 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: 14,
     fontWeight: '600',
-  },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: COLORS.border,
-  },
-  dividerText: {
-    marginHorizontal: 16,
-    color: COLORS.textSecondary,
-    fontSize: 14,
-  },
-  socialButton: {
-    marginBottom: 16,
   },
 });
