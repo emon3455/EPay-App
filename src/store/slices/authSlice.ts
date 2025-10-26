@@ -96,7 +96,8 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
-        state.isAuthenticated = true;
+        // Mark as authenticated if user is verified
+        state.isAuthenticated = action.payload.user.isVerified === true;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {

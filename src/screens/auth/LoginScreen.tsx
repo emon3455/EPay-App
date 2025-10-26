@@ -57,7 +57,18 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleLogin = async () => {
     if (validateForm()) {
-      dispatch(loginUser({ email, password }));
+      const resultAction = await dispatch(loginUser({ email, password }));
+      
+      // Show message if user is not verified
+      if (loginUser.fulfilled.match(resultAction)) {
+        const user = resultAction.payload.user;
+        if (user && user.isVerified === false) {
+          Alert.alert(
+            'Verification Required',
+            'Please verify your account to continue. Check your email for the verification code.'
+          );
+        }
+      }
     }
   };
 

@@ -147,7 +147,7 @@ export const VerifyOTPScreen: React.FC<Props> = ({ navigation, route }) => {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.navigate('Login')}>
             <Icon name="arrow-left" size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
           <View style={styles.iconContainer}>

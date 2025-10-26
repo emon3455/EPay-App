@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 
 export const RootNavigator: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, isLoading, user } = useAppSelector((state) => state.auth);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
@@ -31,10 +31,13 @@ export const RootNavigator: React.FC = () => {
     );
   }
 
+  // Determine which screen to show based on authentication and verification status
+  const shouldShowMain = isAuthenticated && user?.isVerified === true;
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isAuthenticated ? (
+        {shouldShowMain ? (
           <Stack.Screen name="Main" component={MainNavigator} />
         ) : (
           <Stack.Screen name="Auth" component={AuthNavigator} />
