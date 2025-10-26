@@ -59,9 +59,16 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     if (validateForm()) {
       const resultAction = await dispatch(loginUser({ email, password }));
       
-      // Show message if user is not verified
       if (loginUser.fulfilled.match(resultAction)) {
         const user = resultAction.payload.user;
+        
+        // Navigate to AccountPending screen if agent status is pending
+        if (user && user.role === 'AGENT' && user.isActive === 'PENDING') {
+          navigation.navigate('AccountPending');
+          return;
+        }
+        
+        // Show message if user is not verified
         if (user && user.isVerified === false) {
           Alert.alert(
             'Verification Required',

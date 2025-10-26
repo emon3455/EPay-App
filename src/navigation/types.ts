@@ -3,6 +3,7 @@ export type AuthStackParamList = {
   Register: undefined;
   VerifyOTP: { email: string };
   ForgotPassword: undefined;
+  AccountPending: undefined;
 };
 
 export type MainStackParamList = {

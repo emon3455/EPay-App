@@ -96,7 +96,8 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
-        // Mark as authenticated if user is verified
+        // Mark as authenticated if user is verified and active
+        // For agents with pending status, they're authenticated but won't access main app
         state.isAuthenticated = action.payload.user.isVerified === true;
         state.error = null;
       })

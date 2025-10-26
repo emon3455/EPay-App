@@ -31,8 +31,9 @@ export const RootNavigator: React.FC = () => {
     );
   }
 
-  // Determine which screen to show based on authentication and verification status
-  const shouldShowMain = isAuthenticated && user?.isVerified === true;
+  // Determine which screen to show based on authentication, verification and active status
+  const isPendingAgent = isAuthenticated && user?.isActive === 'PENDING' && user?.role === 'AGENT';
+  const shouldShowMain = isAuthenticated && user?.isVerified === true && user?.isActive === 'ACTIVE';
 
   return (
     <NavigationContainer>

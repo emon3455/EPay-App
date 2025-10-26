@@ -4,7 +4,8 @@ import {
   LoginScreen, 
   RegisterScreen, 
   VerifyOTPScreen,
-  ForgotPasswordScreen
+  ForgotPasswordScreen,
+  AccountPendingScreen
 } from '../screens/auth';
 import { AuthStackParamList } from './types';
 import { useAppSelector } from '../store/hooks';
@@ -14,9 +15,22 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 export const AuthNavigator: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
 
-  // Determine initial route based on user verification status
-  const initialRouteName: keyof AuthStackParamList = 
-    user && user.isVerified === false && user.email ? 'VerifyOTP' : 'Login';
+  // Determine initial route based on user verification and active status
+  const getInitialRoute = (): keyof AuthStackParamList => {
+    if (user) {
+      // If user is an agent with pending status, show AccountPending screen
+      if (user.isActive === 'PENDING' && user.role === 'AGENT') {
+        return 'AccountPending';
+      }
+      // If user is not verified, show OTP screen
+      if (user.isVerified === false && user.email) {
+        return 'VerifyOTP';
+      }
+    }
+    return 'Login';
+  };
+
+  const initialRouteName = getInitialRoute();
 
   return (
     <Stack.Navigator
@@ -33,6 +47,7 @@ export const AuthNavigator: React.FC = () => {
         initialParams={user?.email ? { email: user.email } : undefined}
       />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="AccountPending" component={AccountPendingScreen} />
     </Stack.Navigator>
   );
 };
