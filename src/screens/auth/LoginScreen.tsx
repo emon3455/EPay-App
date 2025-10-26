@@ -122,10 +122,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
             <TouchableOpacity
               style={styles.forgotPassword}
-              onPress={() => {
-                // Navigate to forgot password screen
-                Alert.alert('Forgot Password', 'Feature coming soon!');
-              }}>
+              onPress={() => navigation.navigate('ForgotPassword')}>
               <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
 

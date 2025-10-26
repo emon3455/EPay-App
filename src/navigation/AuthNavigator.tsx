@@ -1,6 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LoginScreen, RegisterScreen, VerifyOTPScreen } from '../screens/auth';
+import { 
+  LoginScreen, 
+  RegisterScreen, 
+  VerifyOTPScreen,
+  ForgotPasswordScreen
+} from '../screens/auth';
 import { AuthStackParamList } from './types';
 import { useAppSelector } from '../store/hooks';
 
@@ -27,6 +32,7 @@ export const AuthNavigator: React.FC = () => {
         component={VerifyOTPScreen}
         initialParams={user?.email ? { email: user.email } : undefined}
       />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );
 };

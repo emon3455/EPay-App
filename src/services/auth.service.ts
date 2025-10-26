@@ -83,10 +83,10 @@ export const AuthService = {
   },
 
   /**
-   * Reset password
+   * Forgot password - sends reset link to email
    */
-  async resetPassword(email: string): Promise<any> {
-    const response = await apiClient.post(API_ENDPOINTS.RESET_PASSWORD, { email });
+  async forgotPassword(email: string): Promise<any> {
+    const response = await apiClient.post(API_ENDPOINTS.FORGOT_PASSWORD, { email });
     return response.data;
   },
 
