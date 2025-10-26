@@ -72,9 +72,10 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
             </View>
             <TouchableOpacity 
               onPress={() => navigation.navigate('Profile')}
-              style={styles.avatarButton}
+              style={styles.menuButton}
+              activeOpacity={0.7}
             >
-              <Text style={styles.avatarText}>{user?.name?.charAt(0).toUpperCase()}</Text>
+              <Icon name="menu" size={24} color={COLORS.white} />
             </TouchableOpacity>
           </View>
 
@@ -260,18 +261,15 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.white,
   },
-  avatarButton: {
+  menuButton: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: COLORS.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  avatarText: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: COLORS.primary,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   balanceCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
